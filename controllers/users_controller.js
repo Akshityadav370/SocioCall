@@ -2,20 +2,22 @@ const User = require("../models/user");
 
 module.exports.profile = async function (req, res) {
   const user = await User.findById(req.params.id);
-  return res.render('user_profile', {
-    title: 'User Profile',
-    profile_user: user
+  return res.render("user_profile", {
+    title: "User Profile",
+    profile_user: user,
   });
 };
 
-module.exports.update =async function(req, res) {
+module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {
     await User.findByIdAndUpdate(req.params.id, req.body);
-    return res.redirect('back');
-  }else{
-    return res.status(401).send('Unauthorised');
+    req.flash("success", "Updated!");
+    return res.redirect("back");
+  } else {
+    req.flash("error", "Unauthorized!");
+    return res.status(401).send("Unauthorised");
   }
-}
+};
 
 // render the sign up page
 module.exports.signUp = function (req, res) {
@@ -42,40 +44,47 @@ module.exports.singIn = function (req, res) {
 // get the sign up data
 module.exports.create = function (req, res) {
   if (req.body.password != req.body.confirm_password) {
+    req.flash("error", "Passwords do not match");
     return res.redirect("back");
   }
 
-  try{
-    const user = User.findOne({email: req.body.email});
+  try {
+    const user = User.findOne({ email: req.body.email });
 
     if (user) {
-        User.create(req.body)
-            .then((user)=>{
-                console.log('user created successfully:', user);
-                return res.redirect('/users/sign-in');
-            }).catch((err)=>{
-                console.log('error in creating user while signing up');
-                return;
-            });
+      User.create(req.body)
+        .then((user) => {
+          console.log("user created successfully:", user);
+          return res.redirect("/users/sign-in");
+        })
+        .catch((err) => {
+          req.flash("error", err);
+          console.log("error in creating user while signing up");
+          return;
+        });
     } else {
-        console.log('user already present:', user);
-        return res.redirect('back');
+      console.log("user already present:", user);
+      req.flash('success', 'You have signed up, login to continue!');
+      return res.redirect("back");
     }
-  }
-  catch(err) {
+  } catch (err) {
     console.log("error in finding user in signing up");
-      return;
+    return;
   }
 };
 
 // sign in and create a session for the user
 module.exports.createSession = function (req, res) {
+  req.flash('success', 'Logged in Successfully');
   return res.redirect("/");
 };
 
 module.exports.destroySession = function (req, res) {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-      });
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success', 'You have logged out!');
+    res.redirect("/");
+  });
 };
