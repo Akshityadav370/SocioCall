@@ -1,7 +1,7 @@
 const User = require("../models/user");
 
 module.exports.profile = async function (req, res) {
-  const user = await User.findById(req.params.id);
+  let user = await User.findById(req.params.id);
   return res.render("user_profile", {
     title: "User Profile",
     profile_user: user,
@@ -49,7 +49,7 @@ module.exports.create = function (req, res) {
   }
 
   try {
-    const user = User.findOne({ email: req.body.email });
+    let user = User.findOne({ email: req.body.email });
 
     if (user) {
       User.create(req.body)
