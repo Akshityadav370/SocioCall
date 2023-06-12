@@ -16,11 +16,11 @@ module.exports.home = async function (req, res) {
                 path: 'likes'
             }
         }).populate('likes');
-    console.log("posts ----------------->", posts);
+    // console.log("posts ----------------->", posts);
 
     let users = await User.find({});
-    console.log("users ------------------>", users);
-    console.log("posts.com");
+    // console.log("users ------------------>", users);
+    // console.log("posts.com");
     return res.render("home", {
       title: "SocioCall | Home",
       posts: posts,

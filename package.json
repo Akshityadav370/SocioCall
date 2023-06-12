@@ -31,7 +31,8 @@
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "socket.io": "^4.6.2"
   },
   "devDependencies": {
     "prettier": "2.8.8"
