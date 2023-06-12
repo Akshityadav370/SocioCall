@@ -1,7 +1,7 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8001;
-const cookieParser = require("cookie-parser");
 const expressLayouts = require("express-ejs-layouts");
 const db = require("./config/mongoose");
 
@@ -12,6 +12,7 @@ const passportLocal = require("./config/passport-local-strategy");
 const passportJWT = require('./config/passport-jwt-strategy');
 const passportGoogle = require('./config/passport-google-oauth2-strategy');
 const passportGithub = require('./config/passport-github-oauth2-strategy');
+
 const MongoStore = require("connect-mongo");
 const sassMiddleware = require("node-sass-middleware");
 const flash = require('connect-flash');
@@ -53,13 +54,15 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 100 * 60 * 100,
+      maxAge: (100 * 60 * 100)
     },
     store: MongoStore.create({
       mongoUrl: "mongodb://localhost/sociocall_development",
       autoRemove: "disabled",
     }),
-  })
+  },function(err){
+    console.log(err ||  'connect-mongodb setup ok');
+})
 );
 
 app.use(passport.initialize());
