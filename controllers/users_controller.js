@@ -1,13 +1,41 @@
 const User = require("../models/user");
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 module.exports.profile = async function (req, res) {
-  let user = await User.findById(req.params.id);
-  return res.render("user_profile", {
-    title: "User Profile",
-    profile_user: user,
-  });
+  try {
+    let myUser = await User.findById(req.params.id);
+
+    if (req.user) {
+      usersFriendships = await User.findById(req.user._id).populate({
+        path: "friendships",
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: "from_user to_user",
+        },
+      });
+    }
+    let isFriend = false;
+    for (Friendships of usersFriendships.friendships) {
+      if (
+        Friendships.from_user.id == myUser.id ||
+        Friendships.to_user.id == myUser.id
+      ) {
+        isFriend = true;
+        break;
+      }
+    }
+    return res.render("user_profile", {
+      title: "PROFILE",
+      heading: "PROFILE PAGE",
+      profile_user: myUser,
+      myUser: usersFriendships,
+      isFriend: isFriend,
+    });
+  } catch (err) {
+    console.log(err);
+    return;
+  }
 };
 
 module.exports.update = async function (req, res) {
@@ -17,28 +45,29 @@ module.exports.update = async function (req, res) {
     // return res.redirect("back");
     try {
       let user = await User.findById(req.params.id);
-      User.uploadedAvatar(req, res, function(err){
-        if(err) {console.log('****Multer Error: ', err)}
+      User.uploadedAvatar(req, res, function (err) {
+        if (err) {
+          console.log("****Multer Error: ", err);
+        }
 
         // console.log(req.file);
         user.name = req.body.name;
         user.email = req.body.email;
 
         if (req.file) {
-
           if (user.avatar) {
-            fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+            fs.unlinkSync(path.join(__dirname, "..", user.avatar));
           }
 
           // this is saving the path of the uploaded file into the avatar field in the user
-          user.avatar = User.avatarPath + '/' + req.file.filename
+          user.avatar = User.avatarPath + "/" + req.file.filename;
         }
         user.save();
-        return res.redirect('back');
-      })
-    }catch(err) {
-      req.flash('error', err);
-      return res.redirect('back');
+        return res.redirect("back");
+      });
+    } catch (err) {
+      req.flash("error", err);
+      return res.redirect("back");
     }
   } else {
     req.flash("error", "Unauthorized!");
@@ -91,7 +120,7 @@ module.exports.create = function (req, res) {
         });
     } else {
       console.log("user already present:", user);
-      req.flash('success', 'You have signed up, login to continue!');
+      req.flash("success", "You have signed up, login to continue!");
       return res.redirect("back");
     }
   } catch (err) {
@@ -102,7 +131,7 @@ module.exports.create = function (req, res) {
 
 // sign in and create a session for the user
 module.exports.createSession = function (req, res) {
-  req.flash('success', 'Logged in Successfully');
+  req.flash("success", "Logged in Successfully");
   return res.redirect("/");
 };
 
@@ -111,7 +140,7 @@ module.exports.destroySession = function (req, res) {
     if (err) {
       return next(err);
     }
-    req.flash('success', 'You have logged out!');
+    req.flash("success", "You have logged out!");
     res.redirect("/");
   });
 };

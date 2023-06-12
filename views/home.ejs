@@ -24,14 +24,47 @@
     </div>
   </section>
 
-  <section id="user-friends">
+  <% if (locals.user) { %>
+  <div class="users-list-wrapper">
+    <section class="users-list">
+      <h2>FRIENDS</h2>
+
+      <% for( friendship of myUser.friendships) {%> <%
+      if(friendship.from_user.id == myUser.id) { %>
+      <p>
+        <a href="users/profile/<%=friendship.to_user._id%>"
+          ><%= friendship.to_user.name %>
+        </a>
+      </p>
+      <% } else {%>
+      <p>
+        <a href="users/profile/<%=friendship.from_user._id%>"
+          ><%= friendship.from_user.name %></a
+        >
+      </p>
+      <%}%> <%}%>
+    </section>
+    <% } %>
+
+    <section class="users-list">
+      <h2>ALL USER</h2>
+
+      <% for( User of all_users) {%>
+      <p>
+        <a href="users/profile/<%=User.id%>"><%= User.name %></a>
+      </p>
+      <%}%>
+    </section>
+  </div>
+
+  <!-- <section id="user-friends">
     <h4>Friends</h4>
     <% for(u of all_users){%>
     <p>
       <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
     </p>
     <% } %>
-  </section>
+  </section> -->
   <%- include('_chat_box') -%>
 </div>
 
@@ -53,7 +86,7 @@
 </script>
 <% } %>
 
-<script src="js/toggle_likes.js"></script>
+<script src="/js/toggle_likes.js"></script>
 <script>
   $(".toggle-like-button").each(function () {
     let self = this;

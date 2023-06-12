@@ -17,5 +17,25 @@
     <!-- else show only the profile info -->
     <p><%= profile_user.name %></p>
     <p><%= profile_user.email %></p>
-<%} %>
 
+    
+
+    <a href="/friends/toggle/?userID=<%=profile_user.id%>" id="friend-toggle">
+        <button id="friend-toggle-button">
+            <% if (isFriend) {%>
+                <%= "Remove Friend" %>
+            <% } else {%>
+                <%= "Add Friend" %>
+            <% } %>
+        </button>
+    </a>
+<%  }  %>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
+  integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/user_profile.js" ></script>
