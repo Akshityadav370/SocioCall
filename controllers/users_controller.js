@@ -38,6 +38,10 @@ module.exports.profile = async function (req, res) {
   }
 };
 
+module.exports.posts = function(req,res){
+  res.end('<h1>POST FOR USER</h1>');
+} ;
+
 module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {
     // await User.findByIdAndUpdate(req.params.id, req.body);

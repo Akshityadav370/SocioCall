@@ -9,6 +9,7 @@ module.exports.create = async function (req, res) {
       user: req.user._id,
     });
 
+    //now the ajax requesr is a xmlhttprequest or an xhr request , so we need to detect if the req is ajax or not
     if (req.xhr) {
       // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
       post = await post.populate("user", "name").execPopulate();
@@ -16,6 +17,7 @@ module.exports.create = async function (req, res) {
       return res.status(200).json({
         data: {
           post: post,
+          userName :  req.user.name
         },
         message: "Post created!",
       });

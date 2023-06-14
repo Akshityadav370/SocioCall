@@ -23,8 +23,8 @@ module.exports.toggleUser = async function (req, res) {
                 to_user :  req.user._id
             })
 
-            console.log("********************* friendship1", friendship_op1)
-            console.log("********************* friendship2", friendship_op2)
+            // console.log("********************* friendship1", friendship_op1)
+            // console.log("********************* friendship2", friendship_op2)
 
             if(friendship_op1){
 

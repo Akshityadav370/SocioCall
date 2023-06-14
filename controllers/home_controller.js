@@ -9,12 +9,10 @@ module.exports.home = async function (req, res) {
       .populate("user")
       .populate({
         path: "comments",
-        populate: {
-          path: "user",
-        },
-        populate: {
-          path: "likes",
-        },
+        options :  { sort: { createdAt: -1 } },
+                populate : {
+                    path: 'user likes'
+                },
       })
       .populate("likes");
     // console.log("posts ----------------->", posts);
@@ -36,6 +34,7 @@ module.exports.home = async function (req, res) {
 
     return res.render("home", {
       title: "SocioCall | Home",
+      heading: 'Welcome to SocioCall !',
       posts: posts,
       all_users: users,
       myUser: usersFriendships

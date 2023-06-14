@@ -44,7 +44,9 @@ module.exports.toggleLike = async function (req, res) {
     return res.status(200).json( {
         message: "Request successfull!",
         data: {
-            deleted: deleted
+            deleted: deleted,
+            type : req.query.type,
+                likable : req.query._id
         }
     })
     // return res.redirect("back"

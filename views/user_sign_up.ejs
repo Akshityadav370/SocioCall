@@ -1,17 +1,20 @@
 <h1>Sign Up</h1>
 
-<form action="/users/create" method="post">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Your Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+<form action="/users/create" method="POST">
+    <input type="text" name="name" required placeholder="Your Name" required>
+    <input type="email" name="email" required placeholder="Your Email" required>
+    <input type="password" name="password" required placeholder="password" required>
+    <input type="password" name="confirmPassword" required placeholder="confirm password" required>
     <input type="submit" value="Sign Up">
-
 </form>
 
 <p>
-    <a href="/users/auth/google">Google Sign In/Sign Up</a>
+    <a href="/users/auth/google">
+        Sign up with Google
+    </a>
 </p>
 <p>
-    <a href="/users/auth/github">GitHub Sign In/Sign Up</a>
+    <a href="/users/auth/github">
+        Sign up with Github
+    </a>
 </p>
