@@ -3,11 +3,12 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports.profile = async function (req, res) {
+  let usersFriendships;
   try {
     let myUser = await User.findById(req.params.id);
-
+    
     if (req.user) {
-      usersFriendships = await User.findById(req.user._id).populate({
+      usersFriendships = await User.findById(req.user.id).populate({
         path: "friendships",
         options: { sort: { createdAt: -1 } },
         populate: {
@@ -15,6 +16,8 @@ module.exports.profile = async function (req, res) {
         },
       });
     }
+    console.log('userFriendships', usersFriendships);
+    console.log('myUser', myUser);
     let isFriend = false;
     for (Friendships of usersFriendships.friendships) {
       if (

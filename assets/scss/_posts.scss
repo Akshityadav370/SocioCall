@@ -4,7 +4,17 @@
     margin: 10px;
     border-radius: 10px;
     padding: 5px;
+    // position: relative;
 
+    .post-image{
+        // position: absolute;
+        display: block;
+        max-height: 60vh;
+        max-width: 70vw;
+        margin-left: 4px;
+        margin-right: 4px; 
+        margin-top: 8px;
+    }
 
     h3{
         margin-top: 4px;

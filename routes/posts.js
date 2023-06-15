@@ -10,5 +10,6 @@ router.get(
   passport.checkAuthentication,
   postController.destroy
 );
+router.post('/update', passport.checkAuthentication, postController.update);
 
 module.exports = router;

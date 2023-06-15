@@ -3,6 +3,13 @@
   margin: 10px;
   border-radius: 10px;
   padding: 5px; }
+  .posts-display .post-image {
+    display: block;
+    max-height: 60vh;
+    max-width: 70vw;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 8px; }
   .posts-display h3 {
     margin-top: 4px;
     color: white;
