@@ -34,3 +34,7 @@ class ToggleLike {
     });
   }
 }
+$('.like-btn-link').each(function(){
+  let self = this;
+  let toggleLike = new ToggleLike(self);
+});

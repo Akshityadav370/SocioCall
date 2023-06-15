@@ -1,70 +1,72 @@
 <!-- has the common part of  each page -->
 
 <html>
-    <head>
-        <title>
-            <%=title%>
-        </title>
-        <base href="/">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>   
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-        <link rel="stylesheet" href='/css/layout.css'>
-        <link rel="stylesheet" href='/css/_header.css'>
-        <link rel="stylesheet" href='/css/_footer.css'>
+  <head>
+    <title><%=title%></title>
+    <base href="/" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+      integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw=="
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/_header.css" />
+    <link rel="stylesheet" href="/css/_footer.css" />
 
-        <%- style %><!--Style from the rendered pages boody placed here-->
-    </head>    
+    <%- style %>
+    <!--Style from the rendered pages boody placed here-->
+  </head>
 
-    <body>
+  <body>
+    <div id="header"><%- include("_header"); %></div>
 
-        <div id="header">
-            <%- include("_header"); %>
-        </div>
+    <div class="minus-header">
+      <main id="main-body"><%- body%></main>
 
-        <div class="minus-header">
-            
-        
-            <main id='main-body'>
-                <%- body%>
-            </main>
-        
+      <%- include("_footer"); %>
+    </div>
+    <%- script%><!--Script from the page-->
 
-            <%- include("_footer");   %>
-        </div>
-        <%- script%><!--Script from the page-->
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-        
-        <script >
-            <% if(locals.flash.success && locals.flash.success.length > 0) { %>
+    <script>
+      <% if(locals.flash.success && locals.flash.success.length > 0) { %>
 
-                new Noty({
-                    theme : 'mint' , 
-                    text: "<%= locals.flash.success %>",
-                    type: 'alert',
-                    layout : "topCenter",
-                    timeout : 1500
-                    
-                }).show();
+          new Noty({
+              theme : 'mint' ,
+              text: "<%= locals.flash.success %>",
+              type: 'alert',
+              layout : "topCenter",
+              timeout : 1500
 
-            <% } %>
+          }).show();
 
-            <% if(locals.flash.error && locals.flash.error.length > 0) { %>
+      <% } %>
 
-                new Noty({
-                    theme : 'mint' , 
-                    text: "<%= locals.flash.error %>",
-                    type: 'error',
-                    layout : "topCenter",
-                    timeout : 1500
-                    
-                }).show();
+      <% if(locals.flash.error && locals.flash.error.length > 0) { %>
 
-            <% } %>
+          new Noty({
+              theme : 'mint' ,
+              text: "<%= locals.flash.error %>",
+              type: 'error',
+              layout : "topCenter",
+              timeout : 1500
 
-        </script>
-        
+          }).show();
 
-    </body>
+      <% } %>
+    </script>
+  </body>
 </html>

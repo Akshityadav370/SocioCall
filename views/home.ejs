@@ -1,117 +1,97 @@
-
-<link rel="stylesheet" href='/css/home.css'>
+<link rel="stylesheet" href="/css/home.css" />
 
 <main>
-    <div id = "heading-wrapper">
+  <div id="heading-wrapper">
+    <h1><%=heading%></h1>
 
-        <h1>
-            <%=heading%> 
-        </h1>
+    <p>
+      SocioCall is a social media platform created for programming enthusuists !
+    </p>
+  </div>
+
+  <div id="main-componets-wrapper">
+    <section id="feed-posts">
+      <h2>POSTS</h2>
+
+      <% if (locals.user) { %>
+
+      <form
+        action="/posts/create"
+        method="POST"
+        id="form-posts"
+        class="form-posts"
+      >
+        <textarea
+          name="content"
+          id="content"
+          placeholder="Hey ! wanna share something ?"
+          required
+        ></textarea>
+        <input type="submit" value="POST" id="submit-btn" />
+      </form>
+
+      <% } %>
+
+      <div id="posts-display-wrapper">
+        <% for(p of posts) { %> <%- include('_post') -%> <% } %>
+      </div>
+    </section>
+    <% if (locals.user) { %>
+
+    <div class="users-list-wrapper">
+      <section class="users-list">
+        <h2>FRIENDS</h2>
+
+        <% for( friendship of myUser.friendships) {%> <%
+        if(friendship.from_user.id == myUser.id) { %>
+        <p>
+          <a href="users/profile/<%=friendship.to_user._id%>"
+            ><%= friendship.to_user.name %>
+          </a>
+        </p>
+        <% } else {%>
+        <p>
+          <a href="users/profile/<%=friendship.from_user._id%>"
+            ><%= friendship.from_user.name %></a
+          >
+        </p>
+        <%}%> <%}%>
+      </section>
+      <% } %>
+
+      <section class="users-list">
+        <h2>ALL USER</h2>
+
+        <% for( User of all_users) {%>
 
         <p>
-            SocioCall is a social media platform created for programming enthusuists !
+          <a href="/users/profile/<%=User.id%>"><%= User.name %></a>
         </p>
+
+        <%}%>
+      </section>
     </div>
-        
-    <div id="main-componets-wrapper">
 
-        
-            <section id='feed-posts'>
-                <h2>
-                    POSTS
-                </h2>
-
-                <% if (locals.user) { %>
-
-                    <form action="/posts/create" method="POST" id="form-posts" class="form-posts">
-
-                        <textarea name="content" id="content" placeholder="Hey ! wanna share something ?" required></textarea>
-
-                    </form>
-
-                <% } %>
-
-
-                <div id="posts-display-wrapper">
-
-                    <% for(p of posts) { %>
-                        
-                        <%- include('_post') -%>
-
-                    <% } %>
-
-                    
-                </div>
-
-                
-            </section> 
-            <% if (locals.user) { %>
-
-            <div class ="users-list-wrapper">
-                <section class="users-list">
-                    <h2>
-                        FRIENDS
-                    </h2>
-                
-                        <% for( friendship of myUser.friendships) {%>
-
-                            <% if(friendship.from_user.id == myUser.id) { %>
-                            <p>
-
-                                <a href="users/profile/<%=friendship.to_user._id%>"><%= friendship.to_user.name %> </a>
-                            </p>
-                            <% } else {%>
-                                <p>
-                                    <a href="users/profile/<%=friendship.from_user._id%>"><%= friendship.from_user.name %></a>
-                                
-                                </p>
-                            <%}%>
-
-                        <%}%>
-                
-                </section>
-                <% } %>
-
-                <section class="users-list">
-                    <h2>
-                        ALL USER
-                    </h2>
-
-                    <% for( User of all_users) {%>
-
-                        <p>
-                            <a href="/users/profile/<%=User.id%>"><%= User.name %></a>
-                        </p>
-
-                    <%}%>
-                </section>
-            </div>
-
-            
-
-            <%- include('_chat_box') -%>
-        
-    </div>
-   
+    <%- include('_chat_box') -%>
+  </div>
 </main>
-<script type="text/javascript" src='/js/home_post_comments.js'></script>
-<script type="text/javascript" src='/js/home_posts.js'></script>
-<script type="text/javascript" src='/js/home.js'></script>
-<script type="text/javascript" src='/js/toggle_likes.js' ></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
   integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 ></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src='/js/chat_engine.js'></script>
-<script src='/js/chat_box.js'></script>
+<script type="text/javascript" src="/js/home_post_comments.js"></script>
+<script type="text/javascript" src="/js/home_posts.js"></script>
+<script type="text/javascript" src="/js/home.js"></script>
+<script type="text/javascript" src="/js/toggle_likes.js"></script>
+<script src="/js/chat_engine.js"></script>
+<script src="/js/chat_box.js"></script>
+
 
 <%if(locals.user) {%>
-<script>
-    new ChatEngine('user-chat-box' , '<%= locals.user.email %>');
+  <script>
+    new ChatEngine("user-chat-box", "<%= locals.user.email %>");
 </script>
 <%}%>
-
-

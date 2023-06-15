@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema(
         ref: "Friendship",
       },
     ],
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
+      }
+    ]
+    
   },
   {
     timestamps: true,

@@ -36,22 +36,11 @@
     <input type="submit" value="UPDATE" />
   </form>
   
-  <div id="posts-display-wrapper">
-
-    <% for(p of userposts) { %>
-        
-        <%- include('_user_wall') -%>
-
-    <% } %>
-
-    
-</div>
 
   <h3 id="user-name"><%= profile_user.name%></h3>
 
   <h3 id="user-email"><%= profile_user.email%></h3>
 
-  <>
 
   <a href="/friends/toggle/?userID=<%=profile_user.id%>" id="friend-toggle">
     <button id="friend-toggle-button">
@@ -59,6 +48,47 @@
       %> <% } %>
     </button>
   </a>
+
+  <h3>User Posts</h3>
+
+  <div id="posts-display-wrapper">
+
+    <% for(p of userPosts) { %>
+        
+        <%- include('_user_wall') -%>
+
+    <% } %>
+
+    
+</div>
+  <% } else { %> 
+    <p><%= profile_user.name %></p>
+    <p><%= profile_user.email %></p>
+
+    
+
+    <a href="/friends/toggle/?userID=<%=profile_user.id%>" id="friend-toggle">
+        <button id="friend-toggle-button">
+            <% if (isFriend) {%>
+                <%= "Remove Friend" %>
+            <% } else {%>
+                <%= "Add Friend" %>
+            <% } %>
+        </button>
+    </a>
+
+    <h3>User Posts</h3>
+
+  <div id="posts-display-wrapper">
+
+    <% for(p of userPosts) { %>
+        
+        <%- include('_user_wall') -%>
+
+    <% } %>
+
+    
+</div>
   <% } %>
 </main>
 

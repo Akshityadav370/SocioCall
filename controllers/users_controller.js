@@ -1,23 +1,31 @@
 const User = require("../models/user");
+const Post = require("../models/post");
 const fs = require("fs");
 const path = require("path");
 
 module.exports.profile = async function (req, res) {
+  if (req.user) {
   let usersFriendships;
   try {
     let myUser = await User.findById(req.params.id);
-    
+    // console.log('myUser.posts',myUser.posts);
+
+    // let userPosts = await myUser.posts.populate("posts", "name").exec();
+    let userPosts = await User.findById(req.params.id).populate("posts");
+    // let userPosts = await User.find(['posts.post', 'content']).populate('Post');
+    userPosts = userPosts.posts;
+    // console.log('user posts', userPosts);
     if (req.user) {
-      usersFriendships = await User.findById(req.user.id).populate({
-        path: "friendships",
-        options: { sort: { createdAt: -1 } },
-        populate: {
-          path: "from_user to_user",
-        },
-      });
+    let usersFriendships = await User.findById(req.user.id).populate({
+      path: "friendships",
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: "from_user to_user",
+      },
+    });
     }
-    console.log('userFriendships', usersFriendships);
-    console.log('myUser', myUser);
+    // console.log('userFriendships', usersFriendships);
+    // console.log('myUser', myUser);
     let isFriend = false;
     for (Friendships of usersFriendships.friendships) {
       if (
@@ -34,16 +42,21 @@ module.exports.profile = async function (req, res) {
       profile_user: myUser,
       myUser: usersFriendships,
       isFriend: isFriend,
+      userPosts: userPosts,
     });
   } catch (err) {
     console.log(err);
     return;
   }
+}else{
+  req.flash('error', 'Sign in to view');
+  return res.redirect('back');
+}
 };
 
-module.exports.posts = function(req,res){
-  res.end('<h1>POST FOR USER</h1>');
-} ;
+module.exports.posts = function (req, res) {
+  res.end("<h1>POST FOR USER</h1>");
+};
 
 module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {

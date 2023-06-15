@@ -1,6 +1,7 @@
 const Comment = require("../models/comment");
 const Post = require("../models/post");
 const commentsMailer = require("../mailers/comments_mailer");
+const Like = require("../models/like")
 
 module.exports.create = async function (req, res) {
   try {
@@ -19,7 +20,7 @@ module.exports.create = async function (req, res) {
 
         comment = await comment.populate("user", "name email").execPopulate();
 
-        console.log("comment----------------->", comment);
+        // console.log("comment----------------->", comment);
         // comment = await comment.populate("user", "name email").execPopulate();
         // commentsMailer.newComment(comment);
         if (req.xhr) {
@@ -41,13 +42,13 @@ module.exports.create = async function (req, res) {
     }
   } catch (err) {
     req.flash("error", err);
-    return;
+    return res.redirect('/');
   }
 };
 
 module.exports.destroy = async function (req, res) {
   try {
-    let comment = await Comment.findById(req.params.id);
+    let comment = await Comment.findById(req.query.commentId);
 
     if (comment.user == req.user.id) {
       let postId = comment.post;
@@ -56,7 +57,7 @@ module.exports.destroy = async function (req, res) {
       Comment.findOneAndDelete(comment);
 
       await Post.findByIdAndUpdate(postId, {
-        $pull: { comments: req.params.id },
+        $pull: { comments: req.query.commentId },
       });
 
       await Like.deleteMany({ likeable: comment._id, onModel: "Comment" });
@@ -79,6 +80,9 @@ module.exports.destroy = async function (req, res) {
       return res.redirect("back");
     }
   } catch (error) {
-    req.flash("error in destroying comments", err);
+    req.flash("error in destroying comments", error);
+    console.log('error in destroying comments',error);
+    return res.redirect("back");
+
   }
 };

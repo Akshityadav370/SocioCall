@@ -1,40 +1,46 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 const fs = require("fs");
 const path = require("path");
 
 module.exports.create = async function (req, res) {
-  if (req.user.id == req.params.id)
+  
     try {
-      console.log("check 1");
-      console.log(req.content);
+      let user = await User.findById(req.user._id);
       let post = await Post.create({
         content: req.body.content,
         user: req.user._id,
       });
 
-      //now the ajax requesr is a xmlhttprequest or an xhr request , so we need to detect if the req is ajax or not
-      if (req.xhr) {
-        // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
-        post = await post.populate("user", "name").execPopulate();
+      if (post) {
+        user.posts.push(post);
+        user.save();
 
-        return res.status(200).json({
-          data: {
-            post: post,
-            userName: req.user.name,
-          },
-          message: "Post created!",
-        });
+        //now the ajax requesr is a xmlhttprequest or an xhr request , so we need to detect if the req is ajax or not
+        if (req.xhr) {
+          // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
+          post = await post.populate("user", "name").execPopulate();
+
+          return res.status(200).json({
+            data: {
+              post: post,
+              userName: req.user.name,
+            },
+            message: "Post created!",
+          });
+        }
+
+        req.flash("success", "Post published!");
+        return res.redirect("back");
       }
-
-      req.flash("success", "Post published!");
-      return res.redirect("back");
     } catch (err) {
       req.flash("error", err);
       console.log("error in creating a post", err);
       return res.redirect("back");
     }
+  
 };
 
 module.exports.update = async function (req, res) {
