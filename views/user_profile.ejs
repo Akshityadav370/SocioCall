@@ -4,10 +4,11 @@
   <h1 id="page-heading"><%=heading%></h1>
 
   <% if (profile_user.avatar) { %>
-  <img src="<%=profile_user.avatar%>" alt="<%= profile_user.name%>" />
+  <img class="profile-pic" src="<%=profile_user.avatar%>" alt="<%= profile_user.name%>" />
   <% } else { %>
   <img
-    src="https://media.istockphoto.com/id/1093292836/vector/photo-coming-soon-picture-frame-vector-illustration.jpg?s=170667a&w=0&k=20&c=q3W4zw-lhqUCOLVRWYZefTF8tjEfQ_7FsJcID6bm1HQ="
+    class="profile-pic"
+    src="https://e0.pxfuel.com/wallpapers/292/267/desktop-wallpaper-l-ryuzaki-thumbnail.jpg"
     alt="<%= profile_user.name%>"
   />
   <% } %> <% if( locals.user && locals.user.id == profile_user.id) { %>
@@ -20,14 +21,14 @@
     <input type="file" name="avatar" placeholder="profile-picture" />
     <input
       type="text"
-      name="users_name"
+      name="name"
       id="users_name"
       value="<%= profile_user.name %> "
       required
     />
     <input
       type="email"
-      name="users_email"
+      name="email"
       id="users_email"
       value="<%= profile_user.email %>"
       required

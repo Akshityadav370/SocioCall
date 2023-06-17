@@ -28,6 +28,7 @@ module.exports.create = async function (req, res) {
           // comment = await comment.populate("user", "name email").execPopulate();
 
           // commentsMailer.newComment(comment);
+          
 
           return res.status(200).json({
             data: {
@@ -35,6 +36,7 @@ module.exports.create = async function (req, res) {
             },
             message: "Post created!",
           });
+          
         }
         req.flash("success", "Comment published!");
         res.redirect("/");

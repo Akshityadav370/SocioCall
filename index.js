@@ -34,7 +34,10 @@ app.use(
   })
 );
 
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
+app.use(
+  express.urlencoded({ extended: true })
+);
 
 app.use(cookieParser());
 

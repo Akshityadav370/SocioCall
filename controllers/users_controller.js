@@ -5,53 +5,75 @@ const path = require("path");
 
 module.exports.profile = async function (req, res) {
   if (req.user) {
-  let usersFriendships;
-  try {
-    let myUser = await User.findById(req.params.id);
-    // console.log('myUser.posts',myUser.posts);
+    let usersFriendships;
+    try {
+      let myUser = await User.findById(req.params.id);
+      // console.log('myUser.posts',myUser.posts);
+      await Post.find({})
+      .sort("-createdAt")
+      .populate("user")
+      .populate({
+        path: "comments",
+        options :  { sort: { createdAt: -1 } },
+                populate : {
+                    path: 'user likes'
+                },
+      })
+      .populate("likes");
 
-    // let userPosts = await myUser.posts.populate("posts", "name").exec();
-    let userPosts = await User.findById(req.params.id).populate("posts");
-    // let userPosts = await User.find(['posts.post', 'content']).populate('Post');
-    userPosts = userPosts.posts;
-    // console.log('user posts', userPosts);
-    if (req.user) {
-    let usersFriendships = await User.findById(req.user.id).populate({
-      path: "friendships",
-      options: { sort: { createdAt: -1 } },
-      populate: {
-        path: "from_user to_user",
-      },
-    });
-    }
-    // console.log('userFriendships', usersFriendships);
-    // console.log('myUser', myUser);
-    let isFriend = false;
-    for (Friendships of usersFriendships.friendships) {
-      if (
-        Friendships.from_user.id == myUser.id ||
-        Friendships.to_user.id == myUser.id
-      ) {
-        isFriend = true;
-        break;
+      // let userPosts = await myUser.posts.populate("posts", "name").exec();
+      let userPosts = await User.findById(req.params.id).populate("posts");
+      // let userPosts = await User.find(['posts.post', 'content']).populate('Post');
+      userPosts = userPosts.posts
+      // userPosts = await Post.find(userPosts)
+      //   // .sort("-createdAt")
+      //   .populate("user", "name email")
+      //   .populate({
+      //     path: "comments",
+      //     options: { sort: { createdAt: -1 } },
+      //     populate: {
+      //       path: "user likes",
+      //     },
+      //   })
+      //   .populate("likes");
+      // console.log('user posts', userPosts);
+      // if (req.user) {
+      let usersFriendships = await User.findById(req.user.id).populate({
+        path: "friendships",
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: "from_user to_user",
+        },
+      });
+      // }
+      // console.log('userFriendships', usersFriendships);
+      // console.log('myUser', myUser);
+      let isFriend = false;
+      for (Friendships of usersFriendships.friendships) {
+        if (
+          Friendships.from_user.id == myUser.id ||
+          Friendships.to_user.id == myUser.id
+        ) {
+          isFriend = true;
+          break;
+        }
       }
+      return res.render("user_profile", {
+        title: "PROFILE",
+        heading: "PROFILE PAGE",
+        profile_user: myUser,
+        myUser: usersFriendships,
+        isFriend: isFriend,
+        userPosts: userPosts,
+      });
+    } catch (err) {
+      console.log(err);
+      return;
     }
-    return res.render("user_profile", {
-      title: "PROFILE",
-      heading: "PROFILE PAGE",
-      profile_user: myUser,
-      myUser: usersFriendships,
-      isFriend: isFriend,
-      userPosts: userPosts,
-    });
-  } catch (err) {
-    console.log(err);
-    return;
+  } else {
+    req.flash("error", "Sign in to view");
+    return res.redirect("back");
   }
-}else{
-  req.flash('error', 'Sign in to view');
-  return res.redirect('back');
-}
 };
 
 module.exports.posts = function (req, res) {
@@ -119,7 +141,9 @@ module.exports.singIn = function (req, res) {
 
 // get the sign up data
 module.exports.create = function (req, res) {
-  if (req.body.password != req.body.confirm_password) {
+  console.log("req.body.password", req.body.password);
+  console.log("req.body.confirm", req.body.confirmPassword);
+  if (req.body.password != req.body.confirmPassword) {
     req.flash("error", "Passwords do not match");
     return res.redirect("back");
   }

@@ -68,7 +68,9 @@
 
     <div class="post-comments-list" id="post-comments-wrapper-<%= p.id %>">
       <ul id="post-comments-<%= p.id %>">
-        <% for(comment of p.comments) {%> <%- include('_comment') -%> <% } %>
+        <% for(comment of p.comments) {%> 
+          <%- include('_comment') -%> 
+        <% } %>
       </ul>
     </div>
   </div>

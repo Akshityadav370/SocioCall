@@ -24,35 +24,35 @@
         cursor: pointer; }
   .chat-box-wrapper #user-chat-box {
     transition: height 1s ease-in-out; }
-    .chat-box-wrapper #user-chat-box .chat-messages-list {
+    .chat-box-wrapper #user-chat-box #chat-messages-list {
       list-style: none;
       padding: 5px;
       height: 72%;
       overflow-y: auto; }
-      .chat-box-wrapper #user-chat-box .chat-messages-list .other-message {
+      .chat-box-wrapper #user-chat-box #chat-messages-list .other-message {
         text-align: left;
         padding: 3px; }
-        .chat-box-wrapper #user-chat-box .chat-messages-list .other-message span {
+        .chat-box-wrapper #user-chat-box #chat-messages-list .other-message span {
           border: 1px solid #ac91c5;
           border-radius: 5px;
           display: inline-block;
           padding: 3px 15px;
           font-size: 12px;
           background-color: #ac91c5; }
-        .chat-box-wrapper #user-chat-box .chat-messages-list .other-message .user-mail {
+        .chat-box-wrapper #user-chat-box #chat-messages-list .other-message .user-mail {
           color: white;
           font-size: 8px; }
-      .chat-box-wrapper #user-chat-box .chat-messages-list .self-message {
+      .chat-box-wrapper #user-chat-box #chat-messages-list .self-message {
         text-align: right;
         padding: 3px; }
-        .chat-box-wrapper #user-chat-box .chat-messages-list .self-message span {
+        .chat-box-wrapper #user-chat-box #chat-messages-list .self-message span {
           display: inline-block;
           padding: 3px 15px;
           border: 1px solid #91afc5;
           border-radius: 5px;
           font-size: 12px;
           background-color: #91afc5; }
-        .chat-box-wrapper #user-chat-box .chat-messages-list .self-message .user-mail {
+        .chat-box-wrapper #user-chat-box #chat-messages-list .self-message .user-mail {
           display: none; }
     .chat-box-wrapper #user-chat-box #chat-message-input-container {
       height: 20%;

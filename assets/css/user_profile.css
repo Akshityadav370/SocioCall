@@ -8,3 +8,6 @@ main {
   main #user-name, main #user-email {
     font-size: 1.5rem;
     color: whitesmoke; }
+  main .profile-pic {
+    height: 25%;
+    width: 25%; }

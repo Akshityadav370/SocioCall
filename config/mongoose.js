@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-
-mongoose.connect('mongodb://localhost/sociocall_development');
+dbURI = "mongodb+srv://akshit:EOc8qrRevo5AQEPg@cluster0.q7lvpga.mongodb.net/?retryWrites=true&w=majority";
+// mongoose.connect('mongodb://localhost/sociocall_development');
+mongoose.connect(dbURI);
 
 const db = mongoose.connection;
 
